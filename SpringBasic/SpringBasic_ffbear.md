@@ -19,7 +19,7 @@ _강의를 듣고 강의용을 기반으로 작성하였습니다._
 public class AppConfig {
 
     public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepository);
+        return new MemberServiceImpl(new MemoryMemberRepository());
     }
 }
 
