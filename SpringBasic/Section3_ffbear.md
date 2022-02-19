@@ -53,67 +53,28 @@ public class OrderApp {
 
 <br>
 
-```java
-
-class ApplicationContextInfoTest {
-    
-    //스프링 컨테이서 빈 사용
-    AnnotationConfigApplicationContext ac = new
-            
-            AnnotationConfigApplicationContext(AppConfig.class);
-
-    void findAllBean() {
-        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            Object bean = ac.getBean(beanDefinitionName);
-        }
-    }
-    
-}
-
+스프링 컨테이너를 통해서 빈들을 가져올 수 있다. 
+```
+AnnotationConfigApplicationContext.getBeanDefinitionNames();
 ```
 
-빈들이 들어있는 배열에서 값을 하나씩 읽으며 가져온다.
+`~Names` 로 가져올 경우 빈들의 정보를 담은 배열을 리턴하므로 배열을 다루는 방법으로 읽을 수 있다. 스프링 컨테이너에서 가져온 빈의 타입을 `Object` 로 지정한 것은 타입을 알 수 없기 때문이다.
 
 <br>
 
 ### 애플리케이션 빈 출력하기
 <br>
-스프링 컨테이너에는 스프링이 내주적으로 자동으로 생성한 빈도 있지만 사용자 애플리케이션의 개발을 위해 등록한 빈이있다.
+스프링 컨테이너에는 스프링이 내주적으로 자동으로 생성한 빈도 있지만 사용자 애플리케이션의 개발을 위해 등록한 빈은 구분되어있는데, 빈마다 부여된 역할로 구분된다.  
 
-```java
+- `ROLE_APPLICATION` : 직접 등록한 애플리케이션 빈
+- `ROLE_INFRASTRUCTURE` : 스프링이 내부에서 사용하는 빈
 
-public class ApplicationContextInfoTest {
-
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
-
-    @Test
-    @DisplayName("애플리케이션 빈 출력하기")
-    void findApplicationBean() {
-        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            BeanDefinition beanDefinition = ac.getBeanDefinition(beanDefinitionName);
-
-            //스프링이 내부에서 등록한 빈이 아닌 내가 직접 등록한 빈들이라면
-            //Role ROLE_APPLICATION : 직접 등록한 애플리케이션 빈
-            //Role ROLE_INFRASTRUCTURE : 스프링이 내부에서 사용하는 빈
-            if (beanDefinition.getRole() == BeanDefinition.ROLE_INFRASTRUCTURE) {
-                Object bean = ac.getBean(beanDefinitionName);
-                System.out.println("beanDefinitionName = " + beanDefinitionName + " object = " + bean);
-
-            }
-        }
-    }
-
-}
-
-
-
-```
-
-만약 스프링이 내부에서 사용하는 빈을 출력하려면 `BeanDefinition.ROLE_INFRASTRUCTURE` 으로 바꿔주면 된다.
+`getBeanDefinitionNames()` 메서드를 통해서 배열의 요소들의 역할은 `BeanDefinition.getRole()` 으로 얻을 수 있으며 조건문을 통해서 원하는 역할을 
+가진 빈들을 얻을 수 있다.
 
 <br>
+
+
 
 
 
