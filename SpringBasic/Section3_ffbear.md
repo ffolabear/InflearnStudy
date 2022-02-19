@@ -47,7 +47,73 @@ public class OrderApp {
 
 ## 스프링 빈의 조회
 
+<br>
 
+### 모든 빈 출력하기
+
+<br>
+
+```java
+
+class ApplicationContextInfoTest {
+    
+    //스프링 컨테이서 빈 사용
+    AnnotationConfigApplicationContext ac = new
+            
+            AnnotationConfigApplicationContext(AppConfig.class);
+
+    void findAllBean() {
+        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            Object bean = ac.getBean(beanDefinitionName);
+        }
+    }
+    
+}
+
+```
+
+빈들이 들어있는 배열에서 값을 하나씩 읽으며 가져온다.
+
+<br>
+
+### 애플리케이션 빈 출력하기
+<br>
+스프링 컨테이너에는 스프링이 내주적으로 자동으로 생성한 빈도 있지만 사용자 애플리케이션의 개발을 위해 등록한 빈이있다.
+
+```java
+
+public class ApplicationContextInfoTest {
+
+    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+    @Test
+    @DisplayName("애플리케이션 빈 출력하기")
+    void findApplicationBean() {
+        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            BeanDefinition beanDefinition = ac.getBeanDefinition(beanDefinitionName);
+
+            //스프링이 내부에서 등록한 빈이 아닌 내가 직접 등록한 빈들이라면
+            //Role ROLE_APPLICATION : 직접 등록한 애플리케이션 빈
+            //Role ROLE_INFRASTRUCTURE : 스프링이 내부에서 사용하는 빈
+            if (beanDefinition.getRole() == BeanDefinition.ROLE_INFRASTRUCTURE) {
+                Object bean = ac.getBean(beanDefinitionName);
+                System.out.println("beanDefinitionName = " + beanDefinitionName + " object = " + bean);
+
+            }
+        }
+    }
+
+}
+
+
+
+```
+
+만약 스프링이 내부에서 사용하는 빈을 출력하려면 `BeanDefinition.ROLE_INFRASTRUCTURE` 으로 바꿔주면 된다.
+
+<br>
 
 
 
