@@ -74,8 +74,24 @@ AnnotationConfigApplicationContext.getBeanDefinitionNames();
 
 <br>
 
+이렇게 여러개의 빈을 한꺼번에 조회하는 방법도 있지만 특정 조건에 해당하는 빈들만 조회하는 방법도 있다.
 
+- 빈 이름으로 조회
 
+   -  `AnnotationConfigApplicationContext.getBean("빈 이름", 타입)`
+    
+- 이름 없이 타입만으로 조회
+    -  `AnnotationConfigApplicationContext.getBean(클래스.class)`
+
+<br>
+
+기본적으로 빈의 이름은 메서드의 이름이기때문에 메서드의 이름이 같아서 충돌이 생길 수도 있다. 이렇게 같은 타입의 메서드 메서드의 여러개일 경우 빈의 조회시 오류가 
+발생하기 때문에 이떄는 빈의 이름을 지정하고 해당 이름으로 조회하면 된다. 
+
+<br>
+
+스프링의 빈은 부모 타입을 조회시 자식 타입은 모두 따라온다는 특징이 있다. 그렇기 때문에 자식이 여러개인 부모타입을 조회할때도 이름으로 조회해야 한다. 만약 부모 
+타입으로 모두 조회할때는 `Object` 타입으로 조회하면 된다. 
 
 
 <br>
