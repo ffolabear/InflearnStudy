@@ -28,7 +28,7 @@
 
 <br>
 
-👉 강의별 정리노트 페이지 바로가기
+### 👉 강의별 정리노트 페이지 바로가기
 - [스프링 핵심 원리 - 기본편](https://github.com/ffolabear/InflearnStudy/blob/main/SpringBasic/README_basic.md)
 - [스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/README_MVC1.md)
 - [스프링 MVC 2편 - 백엔드 웹 개발 활용 기술](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC2/README_MVC2.md)
