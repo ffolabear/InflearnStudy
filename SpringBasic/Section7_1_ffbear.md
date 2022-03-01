@@ -1,8 +1,7 @@
 ## 스프링 핵심 원리 - 기본편
-
 _강의를 듣고 강의용을 기반으로 작성하였습니다._
 
-## 스프링 의존관계 주입방법
+## 스프링 의존관계 자동 주입 - 1
 
 ### 1. 생성자 주입
 
@@ -147,3 +146,19 @@ public class OrderServiceImpl implements OrderService {
    
 
 <br><br>
+
+<hr>
+
+### 질문
+
+> Q :  생성자를 통한 의존관계 주입을 설명하는 부분에서 딱 1번만 호출되고 불변하는 시점은 스프링 컨테이너에 등록되는 시점이라고 봐도 되는걸까요?  
+ 
+**A** : Yes
+
+<br>
+
+> Q : 필드주입에서 왜 OrderServiceImpl 에 파라미터가 있는 생성자가 있으면 OrderServiceImplTest 의 fieldInjectionTest 에서 오류가 발생하나요?
+
+**A** : 스프링 컨테이너를 이용하지 않고 기본 생성자를 사용하여 OrderServiceImpl을 만들면 스프링 컨테이너로부터 필드 주입을 받아야 하는 
+memberRepository, discountPolicy는 아무것도 할당받지 않은 상태입니다. 그렇기때문에 NPE가 발생하는 것.
+
