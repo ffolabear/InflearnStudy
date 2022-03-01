@@ -24,6 +24,7 @@
 - [김운기](https://github.com/woonki94)
 - [김성우](https://github.com/tjddnghkrk)
 - [김태현](https://github.com/ffolabear)
+- [박정아](https://github.com/jeonga1048)
 
 <br>
 
