@@ -44,10 +44,8 @@ _강의를 듣고 강의용을 기반으로 작성하였습니다._
 <br>
 
 어노테이션을 붙이면서 삭제했던 코드에 있던 의존관계를 주입해주는 부분은 자동으로 빈을 등록하기 때문에 수동으로 넣어주는 것이 불가능하므로 
-자동의존관계 주입으로 대체한다.    
- 
+자동의존관계 주입으로 대체한다. 자동의존관계 주입은 의존관계 주입이 필요한 클래스의 생성자에 `@Autowired` 를 붙이면 생성자에 필요한 객체를 **타입으로 조회해서** 찾아서 넣어준다.
 
-자동의존관계 주입은 의존관계 주입이 필요한 클래스의 생성자에 `@Autowired` 를 붙이면 생성자에 필요한 객체를 **타입으로 조회해서** 찾아서 넣어준다. 
 
 ```java
 @Component
@@ -105,7 +103,7 @@ bean named 'memoryMemberRepository'
 Overriding bean definition for bean 'memoryMemberRepository' with a different definition: replacing
 ```
 
-<br>
+<br><br>
 
 하지만 최근 스프링부트에서는 아예 오류를 발생시켜버린다. 
 
