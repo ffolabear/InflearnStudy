@@ -100,3 +100,57 @@ public class OrderServiceImpl implements OrderService {
 
 `@Primary` 는 기본값 처럼 동작하는 반면, `@Qualifier` 는  상세하게 동작한다. 이런 경우 자동보다는 수동이, 넒은 범위의 선택권 보다는 좁은 범위의 
 선택권이 우선 순위가 높으므로 `@Qualifier` 가 우선권을 가지게 된다.
+
+<hr>
+
+만약 어떤 로직에서 스프링빈을 특정 자료구조를 받아서 원하는 것을 찾아서 사용하는 경우가 있다면 이럴때는 빈들을 Map 이나 List 에 담을 수도 있다.
+
+```java
+    public class AllBeanTest {
+
+    static class DiscountService {
+
+        private final Map<String, DiscountPolicy> policyMap;
+        private final List<DiscountPolicy> policies;
+
+        @Autowired
+        public DiscountService(Map<String, DiscountPolicy> policyMap, List<DiscountPolicy> policies) {
+            this.policyMap = policyMap;
+            this.policies = policies;
+
+        }
+
+        public int discount(Member member, int price, String discountCode) {
+            DiscountPolicy discountPolicy = policyMap.get(discountCode);
+
+            return discountPolicy.discount(member, price);
+        }
+    }
+
+
+    }
+```
+
+<br>
+
+`policyMap`, `policies` 를 출력하면 다음과 같이 출력된다.
+```
+policyMap = {fixDiscountPolicy=hello.core.discount.FixDiscountPolicy@1951b871, 
+            rateDiscountPolicy=hello.core.discount.RateDiscountPolicy@5c18016b}
+            
+policies = [hello.core.discount.FixDiscountPolicy@1951b871, 
+            hello.core.discount.RateDiscountPolicy@5c18016b]
+
+```
+
+`DiscountService` 에서 `policyMap`, `policies` 은 생성자 주입을 통해서  
+`policyMap` 에는 `key` - `DiscountPolicy` 으로 조회한 빈의 이름과, `value` - `DiscountPolicy` 의 빈을 받고  
+`DiscountPolicy` 에는 `DiscountPolicy` 으로 조회한 빈을 담아준다.    
+
+이 모든것이 스프링 컨테이너를 통해 빈들이 관리되고 있기 때문에 편리하게 사용할 수 있는 것이다.
+
+
+
+<br><br>
+
+
