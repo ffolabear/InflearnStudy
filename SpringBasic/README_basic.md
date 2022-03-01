@@ -10,6 +10,7 @@
 - [Section6 - 컴포넌트 스캔](https://github.com/ffolabear/InflearnStudy/blob/main/SpringBasic/Section6_ffbear.md)
 - [Section7(1) - 의존관계 자동 주입](https://github.com/ffolabear/InflearnStudy/blob/main/SpringBasic/Section7_1_ffbear.md)
 - [Section7(2) - 의존관계 자동 주입](https://github.com/ffolabear/InflearnStudy/blob/main/SpringBasic/Section7_2_ffbear.md)
+- [Section8 - 빈 생명주기 콜백](https://github.com/ffolabear/InflearnStudy/blob/main/SpringBasic/Section8_ffbear.md)
 
 
 <br>
