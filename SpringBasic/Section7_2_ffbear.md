@@ -1,6 +1,7 @@
 ## 스프링 핵심 원리 - 기본편
-_강의를 듣고 강의용을 기반으로 작성하였습니다._
+_강의를 듣고 강의 내용을 기반으로 작성하였습니다._
 
+<br>
 
 ## 스프링 의존관계 자동 주입- 2
 
@@ -33,25 +34,24 @@ _강의를 듣고 강의용을 기반으로 작성하였습니다._
 <br>
 
 ```java
-@Component
-//@RequiredArgsConstructor //final 이 붙은 필드를 모아서 생성자를 자동으로 생성해줌
-public class OrderServiceImpl implements OrderService {
-
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, 
-                     @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
+    @Component
+    public class OrderServiceImpl implements OrderService {
+    
+        @Autowired
+        public OrderServiceImpl(MemberRepository memberRepository, 
+                         @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+            this.memberRepository = memberRepository;
+            this.discountPolicy = discountPolicy;
+        }
+    
     }
-
-}
 ```
 
 만약 `@Qualifier` 에 있는 이름은 찾지 못한다면 해당 이름의 빈을 추가로 찾는과정을 거친다.
 
 <br>
 
-`@Qualifier("mainDiscountPolicy")` 를 사용하면 컴파일시 타입 체크가 안되므로 컴파일오류로 발견할 수 없다, 이럴때는 어노테이션을 만들어서 문제를 
+`@Qualifier("mainDiscountPolicy")` 를 사용하면 컴파일시 타입 체크가 안되므로 컴파일오류로 발견할 수 없는데, 이것은 어노테이션을 만들어서 문제를 
 해결할 수 있다.
 
 ```java
@@ -96,38 +96,37 @@ public class OrderServiceImpl implements OrderService {
 
 `@Primary` 는 우선순위를 정하는 방법이다. @Autowired 시에 여러 빈이 매칭되면 @Primary 가 우선권을 가진다.
 
-<br>
+<br><br>
 
 `@Primary` 는 기본값 처럼 동작하는 반면, `@Qualifier` 는  상세하게 동작한다. 이런 경우 자동보다는 수동이, 넒은 범위의 선택권 보다는 좁은 범위의 
 선택권이 우선 순위가 높으므로 `@Qualifier` 가 우선권을 가지게 된다.
 
 <hr>
 
+<br>
+
 만약 어떤 로직에서 스프링빈을 특정 자료구조를 받아서 원하는 것을 찾아서 사용하는 경우가 있다면 이럴때는 빈들을 Map 이나 List 에 담을 수도 있다.
 
 ```java
     public class AllBeanTest {
 
-    static class DiscountService {
-
-        private final Map<String, DiscountPolicy> policyMap;
-        private final List<DiscountPolicy> policies;
-
-        @Autowired
-        public DiscountService(Map<String, DiscountPolicy> policyMap, List<DiscountPolicy> policies) {
-            this.policyMap = policyMap;
-            this.policies = policies;
-
+        static class DiscountService {
+    
+            private final Map<String, DiscountPolicy> policyMap;
+            private final List<DiscountPolicy> policies;
+    
+            @Autowired
+            public DiscountService(Map<String, DiscountPolicy> policyMap, List<DiscountPolicy> policies) {
+                this.policyMap = policyMap;
+                this.policies = policies;
+            }
+    
+            public int discount(Member member, int price, String discountCode) {
+                DiscountPolicy discountPolicy = policyMap.get(discountCode);
+    
+                return discountPolicy.discount(member, price);
+            }
         }
-
-        public int discount(Member member, int price, String discountCode) {
-            DiscountPolicy discountPolicy = policyMap.get(discountCode);
-
-            return discountPolicy.discount(member, price);
-        }
-    }
-
-
     }
 ```
 
