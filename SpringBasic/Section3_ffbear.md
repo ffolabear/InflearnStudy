@@ -3,96 +3,74 @@ _강의를 듣고 강의용을 기반으로 작성하였습니다._
 
 <br>
 
-## 스프링 컨테이너와 스프링 빈
-기존의 순수 자바 코드를 기반으로 만들었을떄는 `DI` 와 `IOC` 가 `AppConfig` 에서 이루어졌다. 이 순수 자바 코드를 스프링으로 바꾸는 것은 `AppConfig`
-클래스에 `@Configuration` 어노테이션을 붙이는 것에서 시작한다. `@Configuration` 을 붙이므로써 스프링에게 이 자바파일이 설정정보라는 것을 알려줄수있다.
-
-그리고 기존에 만들었던 메서드들에는 `@Bean` 을 붙혀준다.  스프링 컨테이너 생성시 `@Configuration` 클래스를 읽으면서 `@Bean` 붙인 메서드들을 
-**메서드 이름** 을 Key 로, **리턴값을** Value 로 스프링 컨테이너에 등록한다. 이것을 스프링이 관리하는 자바 객체인 빈(Bean)이라고 한다.
-> Bean 의 이름은 메서드이름을 사용하며 반드시 겹치지않는 이름으로 생성해야한다.
-
-스프링 컨테이너의 생성 과정을 요약하면, 
-1. 스프링 컨테이너 생성
-2. 스프링 빈 등록
-3. 스프링 빈 의존관계 설정 - 준비
-4. 스프링 빈 의존관계 설정 - 완료
+### IOC - Inversion Of Control 제어의 역전
 
 <br>
 
-그리고 기존에 `AppConfig` 객체를 만들어서 사용했던 `OrderApp` 은 다음과 같이 바꿔준다.
+객체 지향 설계 원칙 - SOLID 에서 봤을때 기존의 `MemberServiceImpl` 은 `DIP` 를 위반한다. `MemberServiceImpl` 은 `MemberService` 
+인터페이스의 구현체이지만 `new` 연산자를 통해서 직접 `MemoryMemberRepository` 객체를 생성해서 구체화 하고 있으므로 `DIP` 를 위반한다. 이렇게 
+설계했을때 결합도가 높아져서 유연함이 떨어지기 때문에 유지보수가 어려워지는 문제가 있다.   
+
+그래서 이것을 방지하기 위해 `AppConfig` 클래스를 만들어서 `MemberService` 를 호출하면 `MemberServiceImpl` 에 `MemoryMemberRepository`
+객체를 넣어서 리턴해주고 `MemberServiceImpl` 에서는 빈 `MemberRepository` 객체를 생성자에 넣어준다.
+
+<br>
+
+````java
+
+public class AppConfig {
+
+    public MemberService memberService() {
+        return new MemberServiceImpl(new MemoryMemberRepository());
+    }
+}
+
+````
+
+<br>
 
 ```java
-public class OrderApp {
 
-    public static void main(String[] args) {
-        
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
-        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
+public class MemberServiceImpl implements MemberService {
 
-        /*
-               ...
-        */
+    private final MemberRepository memberRepository;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 }
 
 ```
 
-`ApplicationContext` 를 스프링 컨테이너라고 하며 `@Bean` 을 붙혀준 메서드들은 스프링 컨테이너를 통해서 불러와야 한다.
-> 더 정확히는 `BeanFactory` , `ApplicationContext` 로 구분해서 이야기한다.
+이렇게 설계하면 `MemberServiceImpl` 는 `AppConfig` 를 통해 주입받으므로 변경에 닫혀 있으므로 `OCP` 도 만족하면서 `DIP` 도 만족한다. 결국
+`MemberServiceImpl` 를 외부인 `AppConfig` 에서 제어하기 때문에 `제어의 역전` 이라고 부른다.
+> 생성자를 통해서 외부에서 객체를 받으므로 **생성자주입** 이라고도 한다.
+
+- **DIP** 의존관계 역전 원칙 (Dependency inversion principle) : 추상화에 의존해야지, 구체화에 의존하면 안된다.
+- **OCP** 개방-폐쇄 원칙 (Open/closed principle) : 소프트웨어 요소는 확장에는 열려 있으나 변경에는 닫혀 있어야 한다.
 
 <br>
+
+`AppConfig` 처럼 객체를 생성하고 관리하면서 의존관계를 연결해주는 것을 `IOC 컨테이너` 또는 `DI 컨테이너` (더 많이 사용함) 라고 부른다.
+
 <br>
 <hr>
 
-## 스프링 빈의 조회
+
+### DI - Dependency Injection 의존성 주입
 
 <br>
 
-### 모든 빈 출력하기
+`AppConfig` 클래스가 생긴 이후로 `MemberServiceImpl` 입장에서는 어떤 객체가 들어와서 실행되는지는 알 수 없다. 애플리케이션의 실행 시점에서야 
+비로소 `AppConfig` 에서 `MemoryMemberRepository` 객체를 넣어주는것을 알게된다. `MemberServiceImpl` 의 관점에서 외부( `AppConfig` )
+에서 의존관계를 넣어주기 때문에 이것을 `의존관계 주입` 이라고 한다.  
 
-<br>
-
-스프링 컨테이너를 통해서 빈들을 가져올 수 있다. 
-```
-AnnotationConfigApplicationContext.getBeanDefinitionNames();
-```
-
-`~Names` 로 가져올 경우 빈들의 정보를 담은 배열을 리턴하므로 배열을 다루는 방법으로 읽을 수 있다. 스프링 컨테이너에서 가져온 빈의 타입을 `Object` 로 지정한 것은 타입을 알 수 없기 때문이다.
-
-<br>
-
-### 애플리케이션 빈 출력하기
-<br>
-스프링 컨테이너에는 스프링이 내주적으로 자동으로 생성한 빈도 있지만 사용자 애플리케이션의 개발을 위해 등록한 빈은 구분되어있는데, 빈마다 부여된 역할로 구분된다.  
-
-- `ROLE_APPLICATION` : 직접 등록한 애플리케이션 빈
-- `ROLE_INFRASTRUCTURE` : 스프링이 내부에서 사용하는 빈
-
-`getBeanDefinitionNames()` 메서드를 통해서 배열의 요소들의 역할은 `BeanDefinition.getRole()` 으로 얻을 수 있으며 조건문을 통해서 원하는 역할을 
-가진 빈들을 얻을 수 있다.
-
-<br>
-
-이렇게 여러개의 빈을 한꺼번에 조회하는 방법도 있지만 특정 조건에 해당하는 빈들만 조회하는 방법도 있다.
-
-- 빈 이름으로 조회
-
-   -  `AnnotationConfigApplicationContext.getBean("빈 이름", 타입)`
-    
-- 이름 없이 타입만으로 조회
-    -  `AnnotationConfigApplicationContext.getBean(클래스.class)`
-
-<br>
-
-기본적으로 빈의 이름은 메서드의 이름이기때문에 메서드의 이름이 같아서 충돌이 생길 수도 있다. 이렇게 같은 타입의 메서드 메서드의 여러개일 경우 빈의 조회시 오류가 
-발생하기 때문에 이떄는 빈의 이름을 지정하고 해당 이름으로 조회하면 된다. 
-
-<br>
-
-스프링의 빈은 부모 타입을 조회시 자식 타입은 모두 따라온다는 특징이 있다. 그렇기 때문에 자식이 여러개인 부모타입을 조회할때도 이름으로 조회해야 한다. 만약 부모 
-타입으로 모두 조회할때는 `Object` 타입으로 조회하면 된다. 
+의존관계 주입으로 인해 결합도나 낮아지고 유연해지기 때문에 클라이언트 코드를(`MemberServiceImpl`)  변경하지 않고 클라이언트에서 사용하는 인스턴스를 
+변경할 수 있다. 
 
 
-<br>
-<br>
+
+
+
+
+<br><br>
