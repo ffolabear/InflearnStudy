@@ -27,7 +27,7 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 ### 회원 로직
 
 <div align="center">
-    <img src="memberClassDiagram.png" width="80%">
+    <img src="MemberClassDiagram.png" width="80%">
 </div>
 
 
