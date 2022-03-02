@@ -23,12 +23,12 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 <hr>
 
 <br>
-
+    
 ### 회원 로직
 
-<img src="memberClassDiagram.png">
-
-
+<div align="center">
+    <img src="memberClassDiagram.png" width="80%">
+</div>
 
 
 
