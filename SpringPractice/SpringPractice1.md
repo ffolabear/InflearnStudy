@@ -97,11 +97,11 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 
 - #### 할인 정책 
     - ##### `DiscountPolicy` (인터페이스)
-        - `discount(Member member, int price)`      
+        - `int discount(Member member, int price)`      
 
-    - ##### `FixDiscountPolicy` (인터페이스 구현체) - 정액 할인 정책(고정 금액)
+    - ##### ` FixDiscountPolicy` (인터페이스 구현체) - 정액 할인 정책(고정 금액)
     - ##### `RateDiscountPolicy` (인터페이스 구현체) - 정률 할인 정책(주문 금액에 따라 % 할인)
-        - `discount(Member member, int price)`
+        - `int discount(Member member, int price)`
         - 회원의 등급에(VIP, BASIC) 따라 할인금액을 책정 
 
 <br>
@@ -119,7 +119,7 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 
 - #### 주문 서비스
     - ##### `OrderService` (인터페이스)
-        - `createOrder`
+        - `createOrder(Long memberId, String itemName, int itemPrice)`
             - `Order` 객체 리턴
 
     - ##### `OrderServiceImpl` 인터페이스 구현체  (스프링컨테이너 관리 대상)
