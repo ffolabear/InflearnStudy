@@ -45,6 +45,24 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
         - `String` name
         - `Enum` `Grade` - BASIC, VIP
         - `Getter`, `Setter`
+        
+      ```java
+      
+        public class Member {
+            
+            private Long id;
+            private String name;
+            private Grade grade;
+        
+            //기본생성자
+            
+            //Getter & Setter
+      
+        }
+      
+      
+
+        ```
     
 <br>
 
