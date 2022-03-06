@@ -41,63 +41,145 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 - #### 회원 엔티티
     
     - ##### `Member`
-        - `Long` ID
-        - `String` name
-        - `Enum` `Grade` - BASIC, VIP
-        - `Getter`, `Setter`
         
-      ```java
+        ```java
       
-        public class Member {
+            public class Member {
+                
+                private Long id;
+                private String name;
+                private Grade grade;
             
-            private Long id;
-            private String name;
-            private Grade grade;
-        
-            //기본생성자
-            
-            //Getter & Setter
-      
-        }
-      
-      
-
+                //기본생성자
+                
+                //Getter & Setter
+          
+            }
         ```
+      
+    - ##### `Grade`
+            
+        ```java
+         public enum Grade {
+                    BASIC,
+                    VIP 
+                }
+        ```
+                        
+    
     
 <br>
 
 - #### 회원 저장소
     - ##### `MemberRepository` (인터페이스)
-        - `save(Member member)`
-        - `findById(Long memberId)`
+
+        ```java
+        public interface MemberRepository {
+            
+            void 저장(회원);
+            Member ID로회원찾기(회원 ID);
+            
+        }        
+        ```
 
     - ##### `MemoryMemberRepository` - 인터페이스 구현체  (스프링컨테이너 관리 대상)
-        -  회원정보 담은 Map
-        - `save(Member member)`
-        - `findById(Long memberId)`
+
+        ```java
+        //컴포넌트 스캔 대상
+        public class MemoryMemberRepository implements MemberRepository {
+            //회원저장하는 Map
+            //Key : ID, Value : Member 
+               
+            @Override
+            public void 저장(회원) {
+                //Map 에 회원 추가                      
+            }
+            
+            @Override
+            public Member ID로회원찾기(회원 ID) {
+                //memberId에 해당하는 회원 리턴
+            }
+      
+
+        }
+        ```
 
 <br>
 
 - #### 회원 서비스
     - ##### `MemberService` (인터페이스)
-        - `join(Member member)`
-        - `findMember(Long memberId)`
-            - `Member` 객체 리턴
+        
+        ```java
+        public interface MemberService {
+      
+            void 회원가입(회원);
+            Member 회원찾기(회원ID);
+      
+        }
+        ``` 
     
     - ##### `MemberServiceImpl` - 인터페이스 구현체  (스프링컨테이너 관리 대상)
-        - DI (생성자주입)
-        - `join()`, `findMember()` 둘다 의존관계 주입된 객체 사용
-    
-    
+        ```java
+        //컴포넌트 스캔 대상
+        public class MemberServiceImpl implements MemberService {
+        
+            private final 멤버저장소;
+            
+            public MemberServiceImpl 생성자(멤버 저장소){
+                //의존관계 생성자 주입
+            }
+            
+            @Override
+            public void 회원가입(회원){
+                //회원저장소에 회원 저장
+            }
+      
+            @Override
+            public Member 회원찾기(회원ID){
+                return 회원저장소에서 ID로 찾은 회원;
+            }
+        
+        }
+        ```
+
 
 <br>
 
-- #### 회원 가입 Main `MemberApp`
-    - 스프링 컨테이너에 저장된 빈 사용
-        - 특정 빈을 가져와야 그 메서드를 사용할 수 있다. 
-    - 회원 가입 ( `join` )
-    - 특정 회원 조회( `findMember` )
-    - 회원 가입 테스트코드 작성
+- #### 회원 가입 Main `MemberApp`   
+    - `MemberApp`
+        ```java
+            public class MemberApp {
+                public static void main(String[] args) {
+                
+                    //스프링 컨테이너 객체 생성
+                    //컨테이너에서 memberService 란 이름의 빈을 꺼내기
+                    회원A = new 회원(아이디, 이름, 등급);
+                    memberService.회원가입(회원A);
+                    
+                    회원B = 멤버서비스로 찾은 회원;
+      
+            }
+        }
+        ``` 
+  
+<br>
+
+<!--
+- #### 회원 가입 테스트 `MemberServiceTest`
+    ```java
+    public class MemberServiceTest {
+        멤버서비스 전역변수;
+        
+        @BeforeEach
+        public void 모든테스트전에 실행() {
+            //스프링 설정정보 클래스 생서
+        }
+        
+    }
+    ```
+-->
+
+
 
 <br>
 
