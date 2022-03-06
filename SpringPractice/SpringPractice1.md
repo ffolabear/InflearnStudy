@@ -145,7 +145,7 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 
 <br>
 
-- #### 회원 가입 Main `MemberApp`   
+- #### 회원 가입 Main   
     - `MemberApp`
         ```java
             public class MemberApp {
@@ -197,41 +197,111 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 
 - #### 할인 정책 
     - ##### `DiscountPolicy` (인터페이스)
-        - `int discount(Member member, int price)`      
+        - `int discount(Member member, int price)`
+        
+        ```java
+        public interface DiscountPolicy {
+            int 할인(멤버, 가격);
+        }
+        ``` 
 
     - ##### ` FixDiscountPolicy` (인터페이스 구현체) - 정액 할인 정책(고정 금액)
     - ##### `RateDiscountPolicy` (인터페이스 구현체) - 정률 할인 정책(주문 금액에 따라 % 할인)
-        - `int discount(Member member, int price)`
-        - 회원의 등급에(VIP, BASIC) 따라 할인금액을 책정 
+        
+        ```java
+        public class 할인정책 implements DiscountPolicy{
+            
+            @Override
+            public int 할인(할인, 가격) {
+                if(회원의 등급이 VIP){
+                    //정액할인
+                    return 1000;
+      
+                    //정률할인
+                    return 가격 * 0.1;
+                } else {
+                    return 0;
+                }
+      
+            }
+            
+        }
+        ```
 
 <br>
 
 - #### 주문 엔티티
     - ##### `Order`
-        - `Long` memberId
-        - `String` itemName
-        - `int` itemPrice
-        - `int` discountPrice
-        - `Getter`, `Setter`, 
-        - `calculatePrice`
+        ```java
+        public class Order {
+    
+            private Long memberId;
+            private String itemName;
+            private int itemPrice;
+            private int discountPrice;
+      
+            //기본생성자
+            
+            //계산 로직
+            public int calculatePrice() {
+                return itemPrice - discountPrice;
+            }
+      
+            //Getter & Setter
+    
+        }
+        ```
+
 
 <br>
 
 - #### 주문 서비스
     - ##### `OrderService` (인터페이스)
-        - `createOrder(Long memberId, String itemName, int itemPrice)`
-            - `Order` 객체 리턴
+        ```java
+        public interface OrderService {
+            
+            Order 주문생성(회원ID, 상품명, 상품가격);
+        }
+        ```
 
     - ##### `OrderServiceImpl` 인터페이스 구현체  (스프링컨테이너 관리 대상)
-        - DI 생성자 주입
-        - `createOrder` 는 의존관계 주입된 객체 사용 
+        ```java
+        //컴포넌트 스캔 대상
+        public class OrderServiceImpl implements OrderService {
+      
+            private final 회원저장소;
+            private final 할인정책;
+                
+            public OrderServiceImpl 생성자(회원저장소, 할인정책){
+                //의존관계 생성자 주입
+            } 
+            
+            @Override
+            Order 주문생성(회원ID, 상품명, 상품가격){
+                회원A = 회원저장소(회원ID);
+                할인 가격 = 할인정책(회원, 상품가격);
+            }
+        }
+        ```
 
 
 <br>
 
-- #### 주문 Main `OrderApp`
-    - 스프링컨테이너에서 가져온 빈에 새로운 회원을 저장
-    - 등록한 회원의 정보로 새오운 주문 생성
+- #### 주문 Main
+    - `OrderApp`
+        ```java
+        public class OrderApp {
+            public static void main(String[] args) {
+                            
+                //스프링 컨테이너 객체 생성
+                //컨테이너에서 memberService 란 이름의 빈을 꺼내기
+                //컨테이너에서 orderService 란 이름의 빈을 꺼내기
+                회원A = new 회원(아이디, 이름, 등급);
+                memberService.회원가입(회원A);
+                주문A = orderService(회원A정보);
+            }
+        }
+        ```
 
 <br>
 
@@ -243,7 +313,48 @@ _스프링 핵심 원리 - 기본편 을 듣고 진행하는 연습문제입니�
 
 - `AutoAppConfig` (컴포넌트 스캔 대상)
     - 역할과 구현을 분리하고 DIP 와 OCP 를 지키기 위한 클래스
+    ```java
+    @Configuration
+    @ComponentScan(
+        basePackages = "hello.core.member",
+        basePackageClasses = AutoAppConfig.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
+    )    
+    public class AutoAppConfig {
+    
+    }   
+    ```
 
+- `AppConfig` (컴포넌트스캔 사용하기 전 설정정보 클래스)
+    ```java
+        @Configuration
+        public class AppConfig {
+  
+            @Bean
+            public 회원서비스인터페이스 memberService() {
+                return new 회원서비스구현체(회원저장소구현체());
+            }
+        
+            @Bean
+            public 회원저장소구현체 memberRepository() {
+                return new 회원저장소구현체();
+            }
+        
+            @Bean
+            public 주문서비스 orderService() {
+                return new 주문서비스구현체(회원저장소구현체, 할인정책구현체);
+            }
+        
+            //할인 정책 변경시 이부분만 바꿔주면됨
+            @Bean
+            public 할인정책인터페이스 discountPolicy() {
+                return new 정액할인;
+                //return new 정률할인;
+            }
+        
+    }
+
+    ```
 
 
 <br>
