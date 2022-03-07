@@ -109,15 +109,15 @@
   - **숙제 : 3월 10일 까지 스프링 MVC 1편 최소 Section2 까지**
   - 3월 10일 부터 스프링부트를 사용한 게시판 구현하기로 결정
     - 직접 구현해보면서 강의 들으면 더 좋은효과를 볼것 같다는 의견에 모두 동의
-
-<details>
+  - <details>
     <summary>스터디 사진</summary>
        <div markdown="1">
             <div align="left">
                 <img src="StudyRecord/20220307.png" width="40%">
            </div>      
        </div>
-</details>
+    </details>
+
 
 
 
