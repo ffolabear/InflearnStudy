@@ -93,5 +93,11 @@
   - 스터디원 추가로 인한 진도 재설정
 
 <br>
+
+- 2022.02.28 : 🟧 스터디 중간점검
+  - 회원가입 ~ 주문하기 까지 가이드라인 보고 구현해보기
+  - [가이드라인](https://github.com/ffolabear/InflearnStudy/blob/main/SpringPractice/SpringPractice1.md)
+
+<br>
 <br>
 <br>
