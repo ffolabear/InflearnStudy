@@ -94,9 +94,17 @@
 
 <br>
 
-- 2022.02.28 : 🟧 스터디 중간점검
+- 2022.03.04 : 🟧 스터디 중간점검
   - 회원가입 ~ 주문하기 까지 가이드라인 보고 구현해보기
   - [가이드라인](https://github.com/ffolabear/InflearnStudy/blob/main/SpringPractice/SpringPractice1.md)
+
+<br>
+
+- 2022.03.07 : 🟩 스터디 중간점검 - [Gather](https://gather.town/) 로 진행
+  - **숙제 : 3월 10일 까지 스프링 MVC 1편 최소 Section2 까지**
+  - 3월 10일 부터 스프링부트를 사용한 게시판 구현하기로 결정
+    - 직접 구현해보면서 강의 들으면 더 좋은효과를 볼것 같기 때문
+
 
 <br>
 <br>
