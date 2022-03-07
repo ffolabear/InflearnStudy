@@ -233,7 +233,7 @@ public class SingletonWithPrototypeTest1 {
 
 웹 스코프는 웹에서만 동작하고 스프링이 해당 스코프의 종료시점까지 관리한다
 
-#### 종류
+### 종류
 
 - request: HTTP 요청 하나가 들어오고 나갈 때 까지 유지되는 스코프, 각각의 HTTP 요청마다 별도의 빈 인스턴스가 생성되고, 관리된다.
 - session: HTTP Session과 동일한 생명주기를 가지는 스코프
@@ -241,51 +241,55 @@ public class SingletonWithPrototypeTest1 {
 - websocket: 웹 소켓과 동일한 생명주기를 가지는 스코프
 
 
-웹에 클라이언트의 접속 정보를 로그로 찍는 클래스를 예제에서 살펴보자.
+#### 예제
 
-#### MyLogger
-```java
-@Component
-@Scope(value = "request") 
-public class MyLogger {
-  
-    private String uuid;
-    private String requestURL;
+- `MyLogger`
+  -  로거 출력용 클래스
+  - `@Scope(value = "request")` 를 사용해서 요청 당 하나씩 생성되고, HTTP 요청이 끝나는 시점에 소멸된다.
+  - 이 빈이 생성되는 시점에는 URL을 알 수 없으므로, 외부에서 `setter`로 입력 받는다.
+  - 빈 생성시 `UUID` 를 생성하고 빈의 주소를, 
+  - 종료시 생성한 `UUID` 빈 주소를 출력한다. 
     
-    public void setRequestURL(String requestURL) {
-        this.requestURL = requestURL;
-    }
-    
-    public void log(String message) {
-        System.out.println("[" + uuid + "]" + "[" + requestURL +"] " + message);
-    }
-    
-    @PostConstruct
-    public void init() {
-        uuid = UUID.randomUUID().toString();
-        System.out.println("[" + uuid + "] request scope bean create:" + this);
-    }
-    
-    @PreDestroy
-    public void close() {
-        System.out.println("[" + uuid + "] request scope bean close:" + this);
-    }
-}
 
-```
+- `LogDemoController`
+  - 로거가 잘 작동하는지 확인하는 테스트용 컨트롤러다.
+  - 현재 예제에서는 view 화면 없이 문자만 반환하므로 `@RequestBody` 로 설정한다.
+  - HttpServletRequest를 통해서 요청 URL을 받고 그 값을 `myLogger` 의 `setter`로 저장한다.
+
+
+- `LogDemoService`
+  -  서비스 계층에서 로그를 출력하는 클래스
 
 <br>
 
-```java
-    @Controller
-    @RequiredArgsConstructor
-    public class LogDemoController {
-        private final LogDemoService logDemoService;
+위의 예제만으로 기대하는 결과값은 클라이언트들의 요청이 들어올때마다 `Logger` 빈이 생성되어서 정상적으로 로그가 찍히는 것이지만, 어플리케이션의 실행할때는 
+클라이언트의 요청이 없으므로 Request 스코프 빈을 생성할 수 없다.
+
+<br>
+
+두가지 해결책을 사용한다.
+
+<br>
+
+#### `ObjectProvider`
+- 그냥 Logger 를 가져오지말고 DL을 통해서 찾아서 가져온다.
+  - `private final ObjectProvider<MyLogger> myLoggerProvider`
+
+
+<br>
+
+#### 프록시 방식
+- MyLogger 클래스의 어노테이션을 바꿔준다.
+  - ```
+    @Component
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    ```
     
 
-}
-
-```
+- MyLogger의 가짜 프록시 클래스를 만들어두고 HTTP request와 상관 없이 가짜 프록시 클래스를 다른 빈에 미리 주입해 둘 수 있다.  
+- 로그를 찍어보면 내가 만든 클래스가 아닌 `CGLIB` 라이브러리로 만든 가짜 객체를 만들어서 주입한것을 볼 수 있다.
+- 마치 싱글톤을 사용하는 것 같지만 다르게 동작하기 때문에 결국 주의해서 사용해야 한다.
+- 이런 특별한 scope는 꼭 필요한 곳에만 최소화해서 사용하자, 무분별하게 사용하면 유지보수하기 어려워진다.
 
 
 <br><br>
