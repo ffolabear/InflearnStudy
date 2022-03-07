@@ -1,6 +1,13 @@
 # 🍃 InflearnStudy
 > 인프런 [김영한님의 백엔드 로드맵](https://www.inflearn.com/roadmaps?title=%EA%B9%80%EC%98%81%ED%95%9C&page=1) 을 따라 강의를 듣고 스터디한것을 기록하는 레포지토리입니다.  
 
+
+<div align="center">
+    <img src="StudyRecord/20220307.png" width="70%">
+</div>
+
+
+
 <br>
 
 ## 📚 강의목록
