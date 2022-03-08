@@ -5,9 +5,11 @@
 
 #### 김성우
  - [웹어플리케이션설정, 서블릿](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/%EC%9B%B9%20%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%20%EC%84%A4%EC%A0%95%2C%20%EC%84%9C%EB%B8%94%EB%A6%BF_seongwoo.md)
-
+ - [Servlet 정리, Servlet/JSP 차이](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/Servlet%2C%20Servlet%20and%20JSP_seongwoo.md)
 
 <br>
+
+#### 김태현
 
 
 
