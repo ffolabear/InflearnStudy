@@ -11,7 +11,7 @@
 
 #### 김태현
 
-- [Section2 - 웹 애플리케이션 이해]()
+- [Section2 - 웹 애플리케이션 이해](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section2_ffbear.md)
 
 
 
