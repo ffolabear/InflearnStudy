@@ -5,6 +5,13 @@ _강의를 듣고 강의 내용을 기반으로 작성하였습니다._
 
 ## 서블릿
 
+서블릿 코드를 만들때 해야하는 것
+- `@WebServlet(name = "서블릿이름", urlPatterns = "/url 주소")`
+- `HttpServlet` 을 상속받고 `service` 메서드 오버라이드
+- 요청에 대한 여러가지 정보들은 `HttpServletRequest`의 메서드들로 조회가능하다.
+
+
+<br>
 
 ### HTTP 요청 데이터
 
