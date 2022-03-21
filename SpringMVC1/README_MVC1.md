@@ -11,7 +11,10 @@
 
 #### 김태현
 
-- [Section2 - 웹 애플리케이션 이해](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section2_ffbear.md)
+- [Section2 - 서블릿](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section2_ffbear.md)
+- [Section3-1 - 서블릿, JSP, MVC 패턴](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section3_ffbear.md)
+- [Section3-2 - 서블릿, JSP, MVC 패턴](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section3_2_ffbear.md)
+- [Section4 - MVC 프레임워크 만들기](https://github.com/ffolabear/InflearnStudy/blob/main/SpringMVC1/MVC1_Section4_ffbear.md)
 
 
 
