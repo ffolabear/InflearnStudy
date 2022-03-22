@@ -52,17 +52,18 @@ public class MemberFormControllerV1 implements ControllerV1 {
 
 <br>
 
-### Model - `ModelAndView`
+### Model
 이제는 각 컨트롤레에서 하던 `HttpServletRequest`, `HttpServletResponse` 객체에서 정보를 얻는 일을 다른 클래스에서 해주기 때문에 
 더이상 파라미터로 받지않아도된다. 그래서 그 부분을 제거해주고 서블릿이 하던일을 대신 해주는 `Model` 을 생성한다.
 
 #### 뷰 이름 중복 제거
-- 접두사 역할을 하는 복잡한 경로를 변수로 선언해서 마지막에 URI 를 리턴할때 붙여준다.
+접두사 역할을 하는 복잡한 경로를 변수로 선언해서 마지막에 URI 를 리턴할때 붙여준다.
 
 <br>
 
-#### ModelView
+### ModelView - `ModelAndView`
 - `Model` 은 서블릿의 종속성을 없애기 위한 클래스이므로 `HttpServletRequest`, `HttpServletResponse` 을 더이상 사용할 수 없다.
+
 
 -  `String viewName` 와 `Map<String, Object> model` 객체를 인자로 받는데, 컨트롤러에서 `view` 를 렌더링할 데이터를 넣어준다.
 
@@ -74,3 +75,11 @@ public class MemberFormControllerV1 implements ControllerV1 {
 - `ModelView` 객체에서 받은 데이터로 `viewResolver` 메서드로 알맞은 URI를 생성해서 `View` 의 `render` 메서드로 알맞은 화면을 보여준다.
 
 <br>
+
+### 어댑터 - `HandlerAdatpter`
+만약 지금 사용하고 있는 컨트롤러가 아닌 다른 컨트롤러를 사용할때 사용하는 클래스이다. `support` 메서드로 현재 찾고 있는 컨트롤러가 특정 인터페이스의 
+인스턴스인지 비교해보고 맞다면 요청에 맞는 컨트롤러로 요청을 넘긴다.
+
+
+<br><br>
+
